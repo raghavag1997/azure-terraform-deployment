@@ -10,4 +10,5 @@ steps:
     targetPath: '$(Pipeline.Workspace)'
     artifact: 'drop'
     publishLocation: 'pipeline'
+  displayName: 'Publish complete workspace into Azure Artificats'
 
