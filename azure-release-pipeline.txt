@@ -1,0 +1,35 @@
+There are steps which is needed in relase pipeline for terraform deployment
+steps:
+- task: ms-devlabs.custom-terraform-tasks.custom-terraform-installer-task.TerraformInstaller@0
+  displayName: 'Install Terraform 1.0.3'
+  inputs:
+    terraformVersion: 1.0.3
+
+
+steps:
+- task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV2@2
+  displayName: 'Terraform : init'
+  inputs:
+    workingDirectory: '$(System.DefaultWorkingDirectory)/_raghavag1997.azure-terraform-deployment/drop/s'
+    backendServiceArm: 'Azure for Students (dee83517-30ce-449f-b158-3af40f6a8747)'
+    backendAzureRmResourceGroupName: tcd
+    backendAzureRmStorageAccountName: terraformstorageacc12365
+    backendAzureRmContainerName: terraform
+    backendAzureRmKey: terraform.tfstate
+    
+steps:
+- task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV2@2
+  displayName: 'Terraform : plan'
+  inputs:
+    command: plan
+    workingDirectory: '$(System.DefaultWorkingDirectory)/_raghavag1997.azure-terraform-deployment/drop/s'
+    environmentServiceNameAzureRM: 'Azure for Students (dee83517-30ce-449f-b158-3af40f6a8747)'
+    
+steps:
+- task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV2@2
+  displayName: 'Terraform : azurerm'
+  inputs:
+    command: apply
+    workingDirectory: '$(System.DefaultWorkingDirectory)/_raghavag1997.azure-terraform-deployment/drop/s'
+    commandOptions: '-auto-approve'
+    environmentServiceNameAzureRM: 'Azure for Students (dee83517-30ce-449f-b158-3af40f6a8747)'
